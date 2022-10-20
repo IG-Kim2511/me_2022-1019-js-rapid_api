@@ -1,4 +1,6 @@
+const test = document.querySelector(".test");
 
+const data = [];
 
 const url =
   "https://youtube-v31.p.rapidapi.com/search?relatedToVideoId=7ghhRHRP6t4&part=id%2Csnippet&type=video&maxResults=50";
@@ -14,15 +16,25 @@ function getApi(params) {
 
   fetch(url, options)
     .then((response) => response.json())
-    .then((response) => console.log(response))
+    .then((response) =>
+      //  console.log(response)
+      {
+        data.push(response.items);
+        inner();
+      }
+    )
+
     .catch((err) => console.error(err));
 }
 getApi();
 
-
-    // // 👉🍀c18, listen
-    // app.listen(process.env.PORT || 8080, function () {
-    //     console.log((`bgBrightMagenta`).bgBrightMagenta)
-    //     console.log(`ig node server gogo, port: ${process.env.PORT}`.rainbow);
-        
-    // });
+function inner(params) {
+  console.log(data);
+  test.innerHTML = `
+    <div>
+      ${data[0][0].id.videoId}
+      ${data[0][0].snippet.channelTitle}
+      <img src="${data[0][0].snippet.thumbnails.default.url}" alt=""> 
+    </div>
+  `;
+}
